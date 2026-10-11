@@ -54,7 +54,11 @@ async def fire_notif_msgs(for_values, allow_unregistered=True):
                 break
 
         if existingNotif and existingNotif.itemName != "":
-            current_notifications.remove(existingNotif)
+            try:
+                current_notifications.remove(existingNotif)
+            except ValueError as e:
+                print(f"existingNotif, {existingNotif} not in list", e)
+
             save_notifs_to_file()
 
         elif allow_unregistered:
