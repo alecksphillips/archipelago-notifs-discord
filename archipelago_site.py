@@ -1,6 +1,5 @@
 import requests
 import os
-import lxml
 from datetime import datetime, timezone
 from lxml import html
 
@@ -53,7 +52,7 @@ def check_for_new_archipelago_actions(old_set, new_set):
     for entry in new_set.values():
         entry_hash = _get_hashable_key(entry)
 
-        if not (entry_hash in old_set):
+        if entry_hash not in old_set:
             new_actions[entry_hash] = entry
 
     return new_actions

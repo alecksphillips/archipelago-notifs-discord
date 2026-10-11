@@ -125,7 +125,7 @@ async def remove_notification(user, itemName, playerName, channel=None, uid=-1, 
     else:
         notifObj = current_notifications[notifIndex]
 
-        if not userID in notifObj.userIDs:
+        if userID not in notifObj.userIDs:
             msg = f"Cannot remove: {username} is not signed up for this notification!"
             if channel:
                 await channel.send(msg)
