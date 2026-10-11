@@ -162,7 +162,8 @@ async def list_notifications(channel):
     else:
         notifsListStr = "Active notifications:\n```"
         for notification in current_notifications:
-            notifsListStr += f"\n* {notification.itemName} ==> {notification.playerName} (notifies "
+            itemName = notification.itemName if notification.itemName != "" else "ANY"
+            notifsListStr += f"\n* {itemName} ==> {notification.playerName} (notifies "
 
             for i in range(len(notification.usernames)):
                 if i != 0:
@@ -220,24 +221,24 @@ async def parse_usr_msg(message):
             case "add":
                 # create a new notification (if it does not already exist)
 
-                if (argsLen != 4):
+                if (argsLen not in [3, 4]):
                     await send_usage_help_msg(message.channel)
                     return
 
                 user = message.author
-                itemName = args[2].lower().strip()
-                playerName = args[3].lower().strip()
+                playerName = args[2].lower().strip()
+                itemName = args[3].lower().strip() if argsLen == 4 else ""
 
                 await add_notification(user,itemName,playerName,message.channel)
 
             case "remove":
                 # remove an existing notification (if a matching one exists)
-                if (argsLen != 4):
+                if (argsLen not in [3, 4]):
                     await send_usage_help_msg(message.channel)
                     return
 
-                itemName = args[2].lower().strip()
-                playerName = args[3].lower().strip()
+                playerName = args[2].lower().strip()
+                itemName = args[3].lower().strip() if argsLen == 4 else ""
 
                 await remove_notification(message.author, itemName, playerName, message.channel)
 

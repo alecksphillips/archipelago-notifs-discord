@@ -24,13 +24,17 @@ async def fire_notif_msgs(for_values, allow_unregistered=True):
         # check for any matching notifications
         existingNotif = None
         for notification in current_notifications:
-            if(notification.itemName == update['Item'].lower() and notification.playerName == update['Receiver'].lower()):
+            if(
+                (notification.itemName == update['Item'].lower() or notification.itemName == "")
+                and notification.playerName == update['Receiver'].lower()
+            ):
                 existingNotif = notification
 
                 # grab a list of every ping
                 pinglist = ""
                 for i in range(len(notification.usernames)):
-                    await remove_notification(None, notification.itemName, notification.playerName, uname=notification.usernames[i], uid=notification.userIDs[i])
+                    if notification.itemName != "":
+                        await remove_notification(None, notification.itemName, notification.playerName, uname=notification.usernames[i], uid=notification.userIDs[i])
 
                     if i != 0:
                         pinglist += ", "
@@ -49,7 +53,7 @@ async def fire_notif_msgs(for_values, allow_unregistered=True):
 
                 break
 
-        if existingNotif:
+        if existingNotif and existingNotif.itemName != "":
             current_notifications.remove(existingNotif)
             save_notifs_to_file()
 
