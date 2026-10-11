@@ -48,14 +48,12 @@ burger_king_messages = [
 burger_king_message_probs = [0.07, 0.07, 0.07, 0.07, 0.07, 0.07, 0.07, 0.07, 0.07, 0.07, 0.04, 0.04, 0.04, 0.04, 0.04, 0.02, 0.02, 0.02, 0.02, 0.02]
 
 def load_notifs_from_file():
-    global current_notifications
+    current_notifications.clear()
 
     if(os.path.isfile(filename)):
         with open(filename, 'r') as file:
-            current_notifications = json.load(file)
-        current_notifications = [Notification(*x) for x in current_notifications]
-    else:
-        current_notifications = []
+            for entry in json.load(file):
+                current_notifications.append(Notification(*entry))
 
 def load_patrons_from_bk():
     global current_burger_king_patrons
