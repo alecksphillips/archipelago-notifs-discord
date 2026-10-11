@@ -268,4 +268,12 @@ async def parse_usr_msg(message):
                 await send_usage_help_msg(message.channel)
 
 async def send_usage_help_msg(channel):
-    await channel.send('Unrecognized command. Usage:\n!notify add [ItemName] [PlayerName]\n!notify remove [ItemName] [PlayerName]\n!notify list\n!notify gotobk [PlayerName]\n!notify leavebk [PlayerName]\n!notify listbk')
+    await channel.send(
+        'Unrecognized command. Usage:\n' +
+        '!notify add <PlayerName> [ItemName]\n' +
+        '!notify remove <PlayerName> [ItemName]\n' +
+        '!notify list\n' +
+        '!notify gotobk <PlayerName>\n' +
+        '!notify leavebk <PlayerName>\n' +
+        '!notify listbk'
+    )
