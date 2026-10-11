@@ -16,6 +16,8 @@ services:
     secrets:
       - source: environment
         target: /app/.env
+    volumes:
+      - ./data:/data/
 
 secrets:
   environment:

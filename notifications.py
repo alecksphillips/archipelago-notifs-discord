@@ -4,14 +4,18 @@
 # said item is obtained by another player.
 
 from collections import namedtuple
+from pathlib import Path
 import shlex
 import json
 import os
 import numpy as np
 from datetime import datetime, timezone
 
-filename = "saved_notifs.json"
-bkfilename = "patron_list.json"
+
+DATA_DIR = Path(os.getenv("DATA_DIR"))
+
+filename = DATA_DIR / "saved_notifs.json"
+bkfilename = DATA_DIR / "patron_list.json"
 current_notifications = []
 current_burger_king_patrons = []
 
@@ -61,12 +65,12 @@ def load_patrons_from_bk():
         current_burger_king_patrons = []
 
 def save_notifs_to_file():
-    file = open(filename, 'w+')
-    json.dump(current_notifications, file)
+    with open(filename, 'w+') as file:
+        json.dump(current_notifications, file)
 
 def save_patrons_to_bk():
-    file = open(bkfilename, 'w+')
-    json.dump(current_burger_king_patrons, file)
+    with open(bkfilename, 'w+') as file:
+        json.dump(current_burger_king_patrons, file)
 
 async def add_notification(user, itemName, playerName, channel):
     userID = user.id
