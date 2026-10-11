@@ -53,6 +53,7 @@ def load_notifs_from_file():
     if(os.path.isfile(filename)):
         with open(filename, 'r') as file:
             current_notifications = json.load(file)
+        current_notifications = [Notification(*x) for x in current_notifications]
     else:
         current_notifications = []
 
