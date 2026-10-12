@@ -3,14 +3,14 @@
 # to notifications on specific items and then receive pings when
 # said item is obtained by another player.
 
-from collections import namedtuple
-from pathlib import Path
-import shlex
 import json
 import os
-import numpy as np
-from datetime import datetime, timezone
+import shlex
+from collections import namedtuple
+from datetime import UTC, datetime
+from pathlib import Path
 
+import numpy as np
 
 DATA_DIR = Path(os.getenv("DATA_DIR"))
 
@@ -119,7 +119,7 @@ async def remove_notification(user, itemName, playerName, channel=None, uid=-1, 
         if channel:
             await channel.send(msg)
         else:
-            utc_now = datetime.now(timezone.utc)
+            utc_now = datetime.now(UTC)
             utc_timestamp_string = utc_now.strftime("%Y-%m-%d %H:%M:%S UTC")
             print(f"[{utc_timestamp_string}] {msg}")
     else:
@@ -130,7 +130,7 @@ async def remove_notification(user, itemName, playerName, channel=None, uid=-1, 
             if channel:
                 await channel.send(msg)
             else:
-                utc_now = datetime.now(timezone.utc)
+                utc_now = datetime.now(UTC)
                 utc_timestamp_string = utc_now.strftime("%Y-%m-%d %H:%M:%S UTC")
                 print(f"[{utc_timestamp_string}] {msg}")
             return
@@ -146,7 +146,7 @@ async def remove_notification(user, itemName, playerName, channel=None, uid=-1, 
         if channel:
             await channel.send(msg)
         else:
-            utc_now = datetime.now(timezone.utc)
+            utc_now = datetime.now(UTC)
             utc_timestamp_string = utc_now.strftime("%Y-%m-%d %H:%M:%S UTC")
             print(f"[{utc_timestamp_string}] {msg}")
     save_notifs_to_file()
@@ -204,8 +204,6 @@ async def list_burger_king_patrons(channel):
         await channel.send(bkListStr)
 
 async def parse_usr_msg(message):
-    global current_notifications
-
     args = shlex.split(message.content[1:])
     argsLen = len(args)
     print(args)

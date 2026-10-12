@@ -1,6 +1,7 @@
-import requests
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime
+
+import requests
 from lxml import html
 
 
@@ -23,7 +24,7 @@ def get_recent_archipelago_actions(n=-1):
     tracker_site_html = _load_tracker_site()
 
     if not tracker_site_html:
-        utc_now = datetime.now(timezone.utc)
+        utc_now = datetime.now(UTC)
         utc_timestamp_string = utc_now.strftime("%Y-%m-%d %H:%M:%S UTC")
 
         print(f"[{utc_timestamp_string}] [WARNING ] Failed to retrieve site!")

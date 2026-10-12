@@ -1,12 +1,24 @@
-from dotenv import load_dotenv
+import os
+from datetime import UTC, datetime
+
 import discord
 from discord.ext import tasks
-import os
+from dotenv import load_dotenv
 
 # custom module imports
-from archipelago_site import get_recent_archipelago_actions, check_for_new_archipelago_actions
-from notifications import remove_notification, parse_usr_msg, current_notifications, save_notifs_to_file, load_notifs_from_file, load_patrons_from_bk, current_burger_king_patrons
-from datetime import datetime, timezone
+from archipelago_site import (
+    check_for_new_archipelago_actions,
+    get_recent_archipelago_actions,
+)
+from notifications import (
+    current_burger_king_patrons,
+    current_notifications,
+    load_notifs_from_file,
+    load_patrons_from_bk,
+    parse_usr_msg,
+    remove_notification,
+    save_notifs_to_file,
+)
 
 # globals
 recorded_actions = {}
@@ -43,7 +55,7 @@ async def fire_notif_msgs(for_values, allow_unregistered=True):
 
                 msg_content = f"# ARCHIPELAGO UPDATE!\n{pinglist}\n***{update['Finder']}*** has found ***{update['Item']}*** for ***{update['Receiver']}***!"
 
-                print(f'sending notifcation update:\n{msg_content}\npinging: {str(notification.usernames)}')
+                print(f'sending notifcation update:\n{msg_content}\npinging: {notification.usernames!s}')
 
                 await updates_channel.send(msg_content)
 
@@ -70,9 +82,6 @@ async def fire_notif_msgs(for_values, allow_unregistered=True):
 @tasks.loop(seconds=20.0)
 async def archipelago_updates():
     global recorded_actions
-    global updates_channel
-    global current_notifications
-    global current_burger_king_patrons
 
     # if an updates channel has not been specified, skip over the routine for now.
     # This allows updates that were added before the channel was specified to stack up
@@ -93,7 +102,7 @@ async def archipelago_updates():
     # log the time of the routine
 
     # Get the current UTC datetime object
-    utc_now = datetime.now(timezone.utc)
+    utc_now = datetime.now(UTC)
 
     # Format the datetime object into a string
     # Example format: "2025-10-31 18:43:00 UTC"
@@ -103,10 +112,7 @@ async def archipelago_updates():
 
 @client.event
 async def on_ready():
-    global updates_channel
     print(f'We have logged in as {client.user}')
-
-    # updates_channel = client.guilds[0].system_channel
 
     archipelago_updates.start()
 
@@ -123,7 +129,7 @@ async def on_message(message):
 
             # attempts to fire off any important notifications that may have been missed since last time
 
-            utc_now = datetime.now(timezone.utc)
+            utc_now = datetime.now(UTC)
             utc_timestamp_string = utc_now.strftime("%Y-%m-%d %H:%M:%S UTC")
             print(f"[{utc_timestamp_string}] firing off latent notifs!!")
 
