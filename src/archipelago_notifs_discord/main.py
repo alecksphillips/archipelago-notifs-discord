@@ -176,7 +176,7 @@ async def fire_notif_msgs(for_values, allow_unregistered=True):
 
                     pinglist += f"<@{notification.userIDs[i]}>"
 
-                msg_content = f"# ARCHIPELAGO UPDATE!\n{pinglist}\n***{update['Finder']}*** has found ***{update['Item']}*** for ***{update['Receiver']}***!"
+                msg_content = f"# ARCHIPELAGO UPDATE!\n{pinglist}\n***{update['Finder']}*** has found ***{update['Item']}*** for ***{update['Receiver']}  ({update['Location']})!!!***"
 
                 print(f'sending notifcation update:\n{msg_content}\npinging: {notification.usernames!s}')
 
@@ -198,7 +198,7 @@ async def fire_notif_msgs(for_values, allow_unregistered=True):
 
         elif allow_unregistered:
             # nobody signed up for pings, so give the message normally (if instructed)
-            msg_content = f"***{update['Finder']}*** found ***\"{update['Item']}\"*** for ***{update['Receiver']}!!!***"
+            msg_content = f"***{update['Finder']}*** found ***\"{update['Item']}\"*** for ***{update['Receiver']} ({update['Location']})!!!***"
             print(f'sending this update:\n{msg_content}\n')
             await updates_channel.send(msg_content)
 
